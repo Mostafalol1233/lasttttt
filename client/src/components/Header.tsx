@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeProvider";
 import { useLanguage } from "./LanguageProvider";
 import { useState } from "react";
-// Use a proper header logo (Bimora) instead of favicon for the site header
-import logoHeader from "@assets/generated_images/Bimora_gaming_header_logo_25257491.png";
-import logoFavicon from "@assets/generated_images/Bimora_favicon_icon_f416a2cf.png";
-// If you add a dark-mode variant, put it in the generated_images folder and set it here.
-const logoLightImage = logoHeader || logoFavicon;
-const logoDarkImage = logoLightImage;
+// Use the public favicon (served from `client/public/favicon.png`) as the
+// canonical header image so it appears both in the <head> and inside the
+// page reliably after build/deploy. This avoids alias/import issues for
+// static images that live outside the client src tree.
+const logoLightImage = "/favicon.png";
+const logoDarkImage = "/favicon.png";
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
