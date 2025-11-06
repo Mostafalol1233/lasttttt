@@ -54,7 +54,7 @@ export default function Reviews() {
   useEffect(() => {
     let iv: number | undefined;
     if (selectedSeller) {
-      setCountdown(10);
+      setCountdown(20);
       iv = window.setInterval(() => {
         setCountdown((c) => {
           if (c <= 1) {
@@ -95,7 +95,7 @@ export default function Reviews() {
         title: "Review submitted",
         description: "Thank you for your review!",
       });
-      setReviewForm({ userName: "", rating: 5, comment: "" });
+      setReviewForm({ userName: "", rating: 5, comment: "", phone: "" });
       setSelectedSeller(null);
     },
     onError: (error: any) => {
@@ -239,7 +239,7 @@ export default function Reviews() {
                       Write Review
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogContent disableClose className="max-w-2xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
               <DialogTitle>Review {seller.name}</DialogTitle>
             </DialogHeader>
@@ -292,7 +292,20 @@ export default function Reviews() {
                           {createReviewMutation.isPending ? "Submitting..." : "Submit Review"}
                         </Button>
                         {countdown > 0 && (
-                          <p className="text-sm text-muted-foreground">Please subscribe to our YouTube channel (<a className="underline text-primary" href="https://www.youtube.com/channel/UC_BIMORA" target="_blank" rel="noreferrer">Bimora</a>) and wait {countdown} second(s) before submitting.</p>
+                          <p className="text-sm text-muted-foreground">Please subscribe to our YouTube channel (<a
+                            className="underline text-primary"
+                            href="https://www.youtube.com/channel/UC_BIMORA"
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => {
+                              // open channel in new tab and then dismiss the dialog/message
+                              e.preventDefault();
+                              window.open("https://www.youtube.com/channel/UC_BIMORA", "_blank");
+                              // hide countdown message and close dialog
+                              setCountdown(0);
+                              setSelectedSeller(null);
+                            }}
+                          >Bimora</a>) and wait {countdown} second(s) before submitting.</p>
                         )}
                       </div>
 
