@@ -783,7 +783,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     legacyHeaders: false,
   });
 
-  app.post("/api/sellers/:id/reviews", reviewLimiter, async (req, res) => {
+  // Global review cap: limit each IP to 2 reviews across all sellers per 24 hours.
+  // This implements the "max 2 reviews per IP" rule. Note: we can't use
+  // MAC addresses in HTTP requests, so enforcement is IP-based only.
+  const globalReviewLimiter = rateLimit({
+    windowMs: 24 * 60 * 60 * 1000, // 24 hours
+    max: 2,
+    keyGenerator: ipKeyGenerator,
+    handler: (_req, res) => {
+      res.status(429).json({ error: 'Too many reviews from this IP. Maximum 2 reviews per 24 hours.' });
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  // Apply the global per-IP limiter first, then the per-seller limiter.
+  app.post("/api/sellers/:id/reviews", globalReviewLimiter, reviewLimiter, async (req, res) => {
     try {
       const data = insertSellerReviewSchema.parse({
         ...req.body,
