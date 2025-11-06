@@ -4,24 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>Bimora Gaming Blog</title>
-    <meta name="description" content="Explore CrossFire gaming news, character guides, and community updates. Your source for all things CrossFire." />
-    <meta name="keywords" content="CrossFire, gaming, esports, game guides, news, events, reviews" />
-    <link rel="canonical" href="/" />
-    <!-- Open Graph / Social -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Bimora Gaming Blog" />
-    <meta property="og:description" content="Explore CrossFire gaming news, character guides, and community updates." />
-    <meta property="og:image" content="/assets/og-image.png" />
-    <meta property="og:url" content="/" />
-    <meta name="twitter:card" content="summary_large_image" />
+  <meta name="description" content="Explore CrossFire gaming news, character guides, and community updates. Stay updated with guides, events, and reviews from the CrossFire community." />
+  <meta name="keywords" content="CrossFire, CrossFire news, CrossFire guides, gaming blog, esports, game reviews" />
+  <meta name="author" content="Bimora Gaming" />
+  <meta name="robots" content="index, follow, max-snippet:50, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://crossfire-blog.netlify.app/" />
+  <!-- Open Graph / Social -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bimora Gaming Blog" />
+  <meta property="og:title" content="Bimora Gaming Blog — CrossFire news, guides & events" />
+  <meta property="og:description" content="Explore CrossFire gaming news, character guides, and community updates. Stay updated with guides, events, and reviews from the CrossFire community." />
+  <meta property="og:image" content="https://crossfire-blog.netlify.app/assets/og-image.png" />
+  <meta property="og:url" content="https://crossfire-blog.netlify.app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@BimoraGaming" />
 
-    <!-- Google tag (gtag.js) - replace G-XXXXXXXXXX with your tag if different -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7HZFH90BHR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);} 
       gtag('js', new Date());
-      gtag('config', 'G-7HZFH90BHR');
+      gtag('config', 'G-7HZFH90BHR', { 'anonymize_ip': true });
+    </script>
+
+    <!-- JSON-LD structured data: WebSite & Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Bimora Gaming Blog",
+      "url": "https://crossfire-blog.netlify.app/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://crossfire-blog.netlify.app/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Bimora Gaming",
+      "url": "https://crossfire-blog.netlify.app/",
+      "logo": "https://crossfire-blog.netlify.app/favicon.png"
+    }
     </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">

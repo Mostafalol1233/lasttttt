@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: /sitemap.xml
+# Block common private or admin paths (uncomment or edit if you use these)
+# Disallow: /admin
+# Disallow: /dashboard
+
+# Sitemap location (absolute URL recommended)
+Sitemap: https://crossfire-blog.netlify.app/sitemap.xml
