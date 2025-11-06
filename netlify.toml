@@ -27,6 +27,14 @@
   force = true
   headers = {Access-Control-Allow-Origin = "*"}
   
+[[redirects]]
+  # Proxy image assets to the backend so mercenary images served from /assets/* are available
+  from = "/assets/*"
+  to = "http://51.75.118.151:20032/assets/:splat"
+  status = 200
+  force = true
+  conditions = {Language = []}
+  
 
 # SPA fallback - must be last
 [[redirects]]
