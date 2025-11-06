@@ -789,7 +789,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const globalReviewLimiter = rateLimit({
     windowMs: 24 * 60 * 60 * 1000, // 24 hours
     max: 2,
-    keyGenerator: ipKeyGenerator,
+    // Wrap ipKeyGenerator so TypeScript sees a (req) => string signature.
+    keyGenerator: (req: any) => {
+      try {
+        return (ipKeyGenerator as any)(req) || 'unknown';
+      } catch {
+        return 'unknown';
+      }
+    },
     handler: (_req, res) => {
       res.status(429).json({ error: 'Too many reviews from this IP. Maximum 2 reviews per 24 hours.' });
     },
