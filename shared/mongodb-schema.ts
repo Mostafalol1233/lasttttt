@@ -217,6 +217,11 @@ const SellerReviewSchema = new Schema<ISellerReview>({
   createdAt: { type: Date, default: Date.now },
 });
 
+// Prevent race-condition duplicates: enforce a unique index on (sellerId, userName).
+// This makes the database reject two simultaneous reviews with the same userName
+// for the same seller even if requests arrive in parallel.
+SellerReviewSchema.index({ sellerId: 1, userName: 1 }, { unique: true });
+
 export const UserModel = mongoose.model<IUser>('User', UserSchema);
 export const PostModel = mongoose.model<IPost>('Post', PostSchema);
 export const CommentModel = mongoose.model<IComment>('Comment', CommentSchema);

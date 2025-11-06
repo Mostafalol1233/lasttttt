@@ -796,8 +796,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'You have already reviewed this seller' });
       }
 
-      const review = await storage.createSellerReview(data);
-      res.json(review);
+      try {
+        const review = await storage.createSellerReview(data);
+        res.json(review);
+      } catch (err: any) {
+        // Handle duplicate-key from MongoDB (unique index) gracefully.
+        if (err && (err.code === 11000 || /duplicate key/i.test(String(err.message || '')))) {
+          return res.status(400).json({ error: 'You have already reviewed this seller' });
+        }
+        throw err;
+      }
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

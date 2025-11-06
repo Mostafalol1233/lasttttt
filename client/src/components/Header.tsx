@@ -36,7 +36,7 @@ export function Header() {
             <img
               src={theme === "dark" ? logoDarkImage : logoLightImage}
               alt="Bimora Gaming Blog"
-              className="h-8 md:h-10 w-auto object-contain"
+              className="block h-10 md:h-14 w-auto object-contain"
               data-testid="img-logo"
             />
           </Link>
