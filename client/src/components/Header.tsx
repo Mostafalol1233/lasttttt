@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeProvider";
 import { useLanguage } from "./LanguageProvider";
 import { useState } from "react";
-import logoLightImage from "@assets/generated_images/Bimora_favicon_icon_f416a2cf.png";
-// If you add a dark-mode black logo, place it at the path below.
-// For now, fall back to the light logo so the dev server doesn't break when the file is missing.
+// Use a proper header logo (Bimora) instead of favicon for the site header
+import logoHeader from "@assets/generated_images/Bimora_gaming_header_logo_25257491.png";
+import logoFavicon from "@assets/generated_images/Bimora_favicon_icon_f416a2cf.png";
+// If you add a dark-mode variant, put it in the generated_images folder and set it here.
+const logoLightImage = logoHeader || logoFavicon;
 const logoDarkImage = logoLightImage;
 
 export function Header() {
@@ -31,10 +33,10 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex h-16 md:h-20 items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2" data-testid="link-logo">
-            <img 
-                src={theme === 'dark' ? logoDarkImage : logoLightImage}
-              alt="Bimora Gaming Blog" 
-              className="h-10 md:h-12 w-auto object-contain"
+            <img
+              src={theme === "dark" ? logoDarkImage : logoLightImage}
+              alt="Bimora Gaming Blog"
+              className="h-8 md:h-10 w-auto object-contain"
               data-testid="img-logo"
             />
           </Link>
