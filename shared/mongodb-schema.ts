@@ -106,6 +106,7 @@ export interface ISellerReview extends Document {
   userName: string;
   rating: number;
   comment: string;
+  phone: string;
   createdAt: Date;
 }
 
@@ -214,6 +215,7 @@ const SellerReviewSchema = new Schema<ISellerReview>({
   userName: { type: String, required: true },
   rating: { type: Number, required: true, min: 1, max: 5 },
   comment: { type: String, default: '' },
+  phone: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
@@ -327,6 +329,8 @@ export const insertSellerReviewSchema = z.object({
   userName: z.string(),
   rating: z.number().min(1).max(5),
   comment: z.string().optional(),
+  // Phone number required for manual verification by admins. Expect 11 digits.
+  phone: z.string().regex(/^[0-9]{11}$/, "Phone number must be 11 digits"),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,33 @@ export default function Reviews() {
     userName: "",
     rating: 5,
     comment: "",
+    phone: "",
   });
+
+  const [countdown, setCountdown] = useState(0);
+
+  // Start a 10-second countdown whenever the review dialog opens for a seller.
+  useEffect(() => {
+    let iv: number | undefined;
+    if (selectedSeller) {
+      setCountdown(10);
+      iv = window.setInterval(() => {
+        setCountdown((c) => {
+          if (c <= 1) {
+            if (iv) clearInterval(iv);
+            return 0;
+          }
+          return c - 1;
+        });
+      }, 1000);
+    } else {
+      setCountdown(0);
+    }
+
+    return () => {
+      if (iv) clearInterval(iv);
+    };
+  }, [selectedSeller]);
 
   const { data: sellers = [] } = useQuery<Seller[]>({
     queryKey: ["/api/sellers"],
@@ -57,7 +83,7 @@ export default function Reviews() {
   });
 
   const createReviewMutation = useMutation({
-    mutationFn: async (data: { sellerId: string; userName: string; rating: number; comment: string }) => {
+    mutationFn: async (data: { sellerId: string; userName: string; rating: number; comment: string; phone: string }) => {
       return apiRequest(`/api/sellers/${data.sellerId}/reviews`, "POST", data);
     },
     onSuccess: () => {
@@ -89,6 +115,14 @@ export default function Reviews() {
         description: "Please enter your name",
         variant: "destructive",
       });
+      return;
+    }
+    if (!/^[0-9]{11}$/.test(reviewForm.phone)) {
+      toast({ title: "Error", description: "Phone number must be 11 digits", variant: "destructive" });
+      return;
+    }
+    if (countdown > 0) {
+      toast({ title: "Hold on", description: `Please wait ${countdown} second(s) before submitting`, variant: "destructive" });
       return;
     }
     createReviewMutation.mutate({
@@ -211,6 +245,7 @@ export default function Reviews() {
             </DialogHeader>
             
             <div className="space-y-6">
+              {/* Countdown is managed in useEffect when dialog opens */}
               <div className="space-y-4">
                 <h3 className="font-semibold">Review for {seller.name}</h3>                        <div className="space-y-2">
                           <label className="text-sm font-medium">Your Name</label>
@@ -219,6 +254,17 @@ export default function Reviews() {
                             onChange={(e) => setReviewForm({ ...reviewForm, userName: e.target.value })}
                             placeholder="Enter your name"
                             data-testid="input-reviewer-name"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Phone (11 digits) — required for verification</label>
+                          <Input
+                            value={reviewForm.phone}
+                            onChange={(e) => setReviewForm({ ...reviewForm, phone: e.target.value.replace(/[^0-9]/g, '') })}
+                            placeholder="01xxxxxxxxx"
+                            maxLength={11}
+                            data-testid="input-reviewer-phone"
                           />
                         </div>
 
@@ -240,11 +286,14 @@ export default function Reviews() {
 
                         <Button
                           onClick={handleSubmitReview}
-                          disabled={createReviewMutation.isPending}
+                          disabled={createReviewMutation.isPending || countdown > 0}
                           data-testid="button-submit-review"
                         >
                           {createReviewMutation.isPending ? "Submitting..." : "Submit Review"}
                         </Button>
+                        {countdown > 0 && (
+                          <p className="text-sm text-muted-foreground">Please subscribe to our YouTube channel (<a className="underline text-primary" href="https://www.youtube.com/channel/UC_BIMORA" target="_blank" rel="noreferrer">Bimora</a>) and wait {countdown} second(s) before submitting.</p>
+                        )}
                       </div>
 
                       <div className="space-y-4 border-t pt-4">
